@@ -3,69 +3,125 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Gửi Nhi</title>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <style>
+        :root {
+            --primary-color: #ff4d6d;
+            --bg-color: #fff0f3;
+        }
+
         body {
             margin: 0;
+            padding: 0;
             height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            background-color: #ffe4e1;
-            font-family: 'Arial', sans-serif;
+            background-color: var(--bg-color);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             overflow: hidden;
+            touch-action: manipulation;
+            /* Tối ưu cho cảm ứng */
         }
 
         .card {
-            background: white;
-            padding: 40px;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            padding: 30px;
+            border-radius: 25px;
+            box-shadow: 0 15px 35px rgba(255, 77, 109, 0.2);
             text-align: center;
+            width: 85%;
+            max-width: 350px;
             position: relative;
-            width: 350px;
+            z-index: 10;
+            border: 2px solid #fff;
         }
 
         h1 {
-            color: #ff4d6d;
-            font-size: 1.8em;
+            color: var(--primary-color);
+            font-size: 1.6em;
+            margin-bottom: 15px;
+        }
+
+        p {
+            color: #444;
+            line-height: 1.6;
+            font-size: 1.05em;
+        }
+
+        .signature {
+            margin: 20px 0;
+            font-style: italic;
+            color: #777;
         }
 
         .buttons {
-            margin-top: 30px;
+            margin-top: 25px;
             display: flex;
             justify-content: center;
-            gap: 20px;
+            gap: 15px;
+            height: 50px;
+            /* Cố định chiều cao để không bị nhảy layout */
         }
 
         button {
-            padding: 12px 25px;
-            font-size: 1.1em;
+            padding: 12px 20px;
+            font-size: 1em;
+            font-weight: bold;
             border: none;
-            border-radius: 10px;
+            border-radius: 12px;
             cursor: pointer;
-            transition: 0.3s;
+            transition: transform 0.2s, background-color 0.2s;
+            -webkit-tap-highlight-color: transparent;
         }
 
         #yesBtn {
-            background-color: #ff4d6d;
+            background-color: var(--primary-color);
             color: white;
+            box-shadow: 0 4px 15px rgba(255, 77, 109, 0.4);
         }
 
         #noBtn {
-            background-color: #888;
+            background-color: #adb5bd;
             color: white;
-            position: absolute;
-            /* Quan trọng để nút có thể nhảy */
+            position: fixed;
+            /* Dùng fixed để nhảy toàn màn hình */
+            z-index: 999;
         }
 
         .success-msg {
             display: none;
-            color: #ff4d6d;
-            font-weight: bold;
-            font-size: 1.5em;
-            margin-top: 20px;
+            animation: heartBeat 1.2s infinite;
+        }
+
+        @keyframes heartBeat {
+            0% {
+                transform: scale(1);
+            }
+
+            14% {
+                transform: scale(1.1);
+            }
+
+            28% {
+                transform: scale(1);
+            }
+
+            42% {
+                transform: scale(1.1);
+            }
+
+            70% {
+                transform: scale(1);
+            }
+        }
+
+        #main-image {
+            width: 100px;
+            margin-bottom: 10px;
         }
     </style>
 </head>
@@ -73,52 +129,80 @@
 <body>
 
     <div class="card" id="mainCard">
-        <h1>Gửi Nhi - Em yêu!</h1>
-        <p>
-            Từ lần đầu tiên gặp em, anh đã biết trái tim mình đã tìm được bến đỗ.
-            Mỗi khoảnh khắc bên em đều là niềm hạnh phúc tuyệt vời nhất.
-            Anh viết những dòng này để nói với em rằng:
-            **Anh yêu em rất nhiều!** ❤️
-        </p>
-        <p>
-            Em có đồng ý làm người yêu của anh không?
-        </p>
-        <div class="signature">
-            Thương nhớ, <br>
-            T.Anh
+        <img src="https://cdn-icons-png.flaticon.com/512/4359/4359295.png" id="main-image" alt="Heart">
+        <h1 id="question">Gửi Nhi - Em yêu!</h1>
+        <div id="content">
+            <p>
+                Từ lần đầu tiên gặp em, anh đã biết trái tim mình đã tìm được bến đỗ.<br>
+                <b>Anh yêu em rất nhiều!</b> ❤️
+            </p>
+            <p>Em đồng ý làm người yêu anh nhé?</p>
+            <div class="signature">Thương nhớ, <br> T.Anh</div>
+            <div class="buttons">
+                <button id="yesBtn">Đồng ý!</button>
+                <button id="noBtn">Không</button>
+            </div>
         </div>
-        <div class="buttons">
-            <button id="yesBtn">Đồng ý!</button>
-            <button id="noBtn">Không</button>
+
+        <div id="message" class="success-msg">
+            <h1 style="font-size: 2em;">Yeee! ❤️</h1>
+            <p>I Love Youuu 💖</p>
+            <p>Hẹn Nhi buổi tối hẹn hò đầu tiên nhé!</p>
         </div>
-        <div id="message" class="success-msg">Yeee!I Love Youuu 💖I Love Youuu 💖I Love Youuu </div>
     </div>
 
     <script>
         const noBtn = document.getElementById('noBtn');
         const yesBtn = document.getElementById('yesBtn');
         const question = document.getElementById('question');
+        const content = document.getElementById('content');
         const message = document.getElementById('message');
-        const buttonsDiv = document.querySelector('.buttons');
 
-        // Hàm khiến nút "Không" nhảy đi chỗ khác
-        noBtn.addEventListener('mouseover', () => {
-            const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
-            const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
+        // Hàm di chuyển nút "Không"
+        function moveNoButton() {
+            // Giới hạn để nút không nhảy ra ngoài màn hình quá nhiều
+            const x = Math.random() * (window.innerWidth - noBtn.offsetWidth - 20) + 10;
+            const y = Math.random() * (window.innerHeight - noBtn.offsetHeight - 20) + 10;
 
             noBtn.style.left = x + 'px';
             noBtn.style.top = y + 'px';
+        }
+
+        // Hỗ trợ cả chuột và cảm ứng điện thoại
+        noBtn.addEventListener('mouseover', moveNoButton);
+        noBtn.addEventListener('touchstart', (e) => {
+            e.preventDefault(); // Chặn việc click nhầm
+            moveNoButton();
         });
 
         // Khi bấm "Đồng ý"
         yesBtn.addEventListener('click', () => {
             question.style.display = 'none';
-            buttonsDiv.style.display = 'none';
+            content.style.display = 'none';
             noBtn.style.display = 'none';
             message.style.display = 'block';
+            document.body.style.backgroundColor = '#ffc0cb';
 
-            // Hiệu ứng đổi màu nền lãng mạn
-            document.body.style.backgroundColor = '#ffb6c1';
+            // Hiệu ứng pháo hoa trái tim bùng nổ
+            var duration = 15 * 1000;
+            var animationEnd = Date.now() + duration;
+            var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
+
+            function randomInRange(min, max) {
+                return Math.random() * (max - min) + min;
+            }
+
+            var interval = setInterval(function () {
+                var timeLeft = animationEnd - Date.now();
+
+                if (timeLeft <= 0) {
+                    return clearInterval(interval);
+                }
+
+                var particleCount = 50 * (timeLeft / duration);
+                confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } }));
+                confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } }));
+            }, 250);
         });
     </script>
 </body>
