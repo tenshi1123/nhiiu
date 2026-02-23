@@ -4,64 +4,110 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gửi Em (Tên người ấy)</title>
+    <title>Gửi Nhi</title>
     <style>
         body {
-            font-family: 'Times New Roman', serif;
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             background-color: #ffe4e1;
-            /* Màu hồng nhạt lãng mạn */
-            color: #8b0000;
-            /* Màu đỏ đậm */
-            text-align: center;
-            padding: 50px;
+            font-family: 'Arial', sans-serif;
+            overflow: hidden;
         }
 
-        .container {
-            max-width: 600px;
-            margin: auto;
-            background-color: white;
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        .card {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            position: relative;
+            width: 350px;
         }
 
         h1 {
-            color: #ff69b4;
-            /* Hồng đậm */
-            font-size: 2.5em;
-            margin-bottom: 20px;
+            color: #ff4d6d;
+            font-size: 1.8em;
         }
 
-        p {
-            font-size: 1.2em;
-            line-height: 1.6;
-        }
-
-        .signature {
+        .buttons {
             margin-top: 30px;
-            font-style: italic;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        button {
+            padding: 12px 25px;
+            font-size: 1.1em;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        #yesBtn {
+            background-color: #ff4d6d;
+            color: white;
+        }
+
+        #noBtn {
+            background-color: #888;
+            color: white;
+            position: absolute;
+            /* Quan trọng để nút có thể nhảy */
+        }
+
+        .success-msg {
+            display: none;
+            color: #ff4d6d;
             font-weight: bold;
+            font-size: 1.5em;
+            margin-top: 20px;
         }
     </style>
 </head>
 
 <body>
-    <div class="container">
-        <h1>Gửi Nhi - Em yêu!</h1>
-        <p>
-            Từ lần đầu tiên gặp em, anh đã biết trái tim mình đã tìm được bến đỗ.
-            Mỗi khoảnh khắc bên em đều là niềm hạnh phúc tuyệt vời nhất.
-            Anh viết những dòng này để nói với em rằng:
-            **Anh yêu em rất nhiều!** ❤️
-        </p>
-        <p>
-            Em có đồng ý làm người yêu của anh không?
-        </p>
-        <div class="signature">
-            Thương nhớ, <br>
-            Tú Anh
+
+    <div class="card" id="mainCard">
+        <h1 id="question">Làm người yêu anh nhé? ❤️</h1>
+        <div class="buttons">
+            <button id="yesBtn">Đồng ý!</button>
+            <button id="noBtn">Không</button>
         </div>
+        <div id="message" class="success-msg">Yeee! Anh biết mà! I Love Youuu 💖</div>
     </div>
+
+    <script>
+        const noBtn = document.getElementById('noBtn');
+        const yesBtn = document.getElementById('yesBtn');
+        const question = document.getElementById('question');
+        const message = document.getElementById('message');
+        const buttonsDiv = document.querySelector('.buttons');
+
+        // Hàm khiến nút "Không" nhảy đi chỗ khác
+        noBtn.addEventListener('mouseover', () => {
+            const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
+            const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
+
+            noBtn.style.left = x + 'px';
+            noBtn.style.top = y + 'px';
+        });
+
+        // Khi bấm "Đồng ý"
+        yesBtn.addEventListener('click', () => {
+            question.style.display = 'none';
+            buttonsDiv.style.display = 'none';
+            noBtn.style.display = 'none';
+            message.style.display = 'block';
+
+            // Hiệu ứng đổi màu nền lãng mạn
+            document.body.style.backgroundColor = '#ffb6c1';
+        });
+    </script>
 </body>
 
 </html>
